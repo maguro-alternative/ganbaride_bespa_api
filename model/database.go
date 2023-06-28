@@ -54,10 +54,67 @@ func init() {
 
 	_, err = Db.Exec(sql)
 
+	
+
 	// エラーハンドリング省略
 	if err != nil {
 		log.Fatalf("main sql.Open error err:%v", err)
 	}else{
 		fmt.Println("Connection has been established!")
+	}
+}
+
+
+func riderinsert(){
+	sql := `
+	CREATE TABLE IF NOT EXISTS rider(
+		number varchar(20) PRIMARY KEY,
+		name varchar(50) not null,
+		rarity int not null,
+		category varchar(50)[] not null,
+		attribute varchar(2) not null,
+		attack bigint not null,
+		defence bigint not null,
+		hitpoint bigint not null,
+		finishingattack bigint not null,
+		skillname varchar(50) not null,
+		attackteki bigint not null,
+		defenceteki bigint not null,
+		hitpointteki bigint not null,
+		finishingattackteki bigint not null
+	)`
+
+	_, err := Db.Exec(sql)
+	if err != nil {
+		log.Fatalf("main sql.Open error err:%v", err)
+	}
+
+	sql = `
+	INSERT INTO rider(
+		number,
+		name,
+		rarity,
+		category,
+		attribute,
+		attack,
+		defence,
+		hitpoint,
+		finishngattack,
+		skillname,
+		attackteki,
+		defenceteki,
+		hitpointteki,
+		finishngattackteki
+	) VALUES
+		(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+		ON CONFLICT DO NOTHING
+	`
+	_, err = Db.Exec(
+		sql,
+		err,
+
+	)
+	if err != nil {
+		log.Fatalf("main sql.Open error err:%v", err)
 	}
 }
