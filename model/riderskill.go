@@ -2,13 +2,9 @@ package model
 
 type (
 	RiderSkill struct {
-		SkillName		   string
-		SkillType		   int
-		SkillConditions	   string
-		SkillBonus		   SkillBonus
-	}
-	// ライダースキルの構造体
-	SkillBonus struct {
+		SkillName            string
+		SkillType            int
+		SkillConditions      string
 		MyAttack             int
 		MyDefence            int
 		MyHitPoint           int
@@ -20,4 +16,5 @@ type (
 		EnemyFinishingAttack int
 		EnemyAttackPoint     int
 	}
+
 )

@@ -42,29 +42,11 @@ type (
 		Attack              int      `json:"attack"`
 		Defence             int      `json:"defence"`
 		HitPoint            int      `json:"hitpoint"`
-		FinishingAttack     int      `json:"finishingattack"`
-		SkillName           string   `json:"skillname"`
-		AttackTeki          int      `json:"attackteki"`
-		DefenceTeki         int      `json:"defenceteki"`
-		HitPointTeki        int      `json:"hitpointteki"`
-		FinishingAttackTeki int      `json:"finishingattackteki"`
-	}
-	// ライダーステータス
-	Aptitude struct {
-		Name                string
-		Category            []string
-		Attribute           string
-		Attack              int
-		Defence             int
-		HitPoint            int
-		FinishingAttack     int
-		SkillName           string
-		SkillType           int
-		SkillConditions     string
-		SkillBonus          SkillBonus
-		AttackTeki          int
-		DefenceTeki         int
-		HitPointTeki        int
-		FinishingAttackTeki int
+		FinishingAttack     int      `json:"finishingAttack"`
+		SkillName           string   `json:"skillName"`
+		AttackTeki          int      `json:"attackTeki"`
+		DefenceTeki         int      `json:"defenceTeki"`
+		HitPointTeki        int      `json:"hitpointTeki"`
+		FinishingAttackTeki int      `json:"finishingAttackTeki"`
 	}
 )
