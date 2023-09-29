@@ -1,29 +1,60 @@
 package main
 
 import (
-	"github.com/maguro-alternative/ganbaride_bespa_api/model"
-	"github.com/maguro-alternative/ganbaride_bespa_api/handlers"
+	"github.com/maguro-alternative/ganbaride_bespa_api/db"
+	"github.com/maguro-alternative/ganbaride_bespa_api/handlers/router"
 
 	"net/http"
-	"fmt"
+	"os"
+	"log"
+	"time"
 )
 
-func migrate() {
-	sql := `INSERT INTO todos(id, name, status) VALUES('00000000000000000000000000','買い物', '作業中'),('00000000000000000000000001','洗濯', '作業中'),('00000000000000000000000002','皿洗い', '完了');`
-
-	_, err := model.Db.Exec(sql)
-
+func main() {
+	err := realMain()
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatalln("main: failed to exit successfully, err =", err)
 	}
-
-	fmt.Println("Migration is success!")
 }
 
-func main() {
-    // 省略
-	port := "8080"
-	http.HandleFunc("/fetch-todos", handlers.TeamSuitable)
-	http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+func realMain() error {
+	// config values
+	const (
+		defaultPort   = ":8080"
+		defaultDBPath = ".sqlite3/todo.db"
+	)
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
+
+	dbPath := os.Getenv("DB_PATH")
+	if dbPath == "" {
+		dbPath = defaultDBPath
+	}
+
+	// set time zone
+	var err error
+	time.Local, err = time.LoadLocation("Asia/Tokyo")
+	if err != nil {
+		return err
+	}
+
+	// set up sqlite3
+	todoDB, err := db.NewDB(dbPath)
+	if err != nil {
+		return err
+	}
+	defer todoDB.Close()
+
+	// NOTE: 新しいエンドポイントの登録はrouter.NewRouterの内部で行うようにする
+	mux := router.NewRouter(todoDB)
+
+	// TODO: サーバーをlistenする
+	// NOTE: ポート番号は上記のport変数を使用すること
+	// NOTE: エラーが発生した場合はlog.Fatalでログを出力すること
+	log.Fatal(http.ListenAndServe(port, mux))
+
+	return nil
 }
